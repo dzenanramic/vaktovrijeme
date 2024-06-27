@@ -31,11 +31,11 @@ export default function Vaktija() {
     vakat: string[];
   } | null>(null);
 
-    const handleCityClick = async (location: string, index: number) => {
-      dispatch(getCityDetails(location));
-      const prayerTimes = await fetchPrayerTimes(index);
-      setSelectedPrayerTimes(prayerTimes);
-    };
+  const handleCityClick = async (location: string, index: number) => {
+    const prayerTimes = await fetchPrayerTimes(index);
+    setSelectedPrayerTimes(prayerTimes);
+    dispatch(getCityDetails(location));
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,7 +43,7 @@ export default function Vaktija() {
         const response = await fetchPrayerTimes(1);
         console.log(response);
         setSelectedPrayerTimes(response);
-        handleCityClick(response.lokacija, response.id);
+        dispatch(getCityDetails(response.lokacija));
       } catch (e) {
         console.log(e);
       }
@@ -66,8 +66,6 @@ export default function Vaktija() {
   });
 
   const dispatch: AppDispatch = useDispatch();
-
-
 
   if (isLoading)
     return (
