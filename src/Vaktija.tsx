@@ -37,19 +37,29 @@ export default function Vaktija() {
     dispatch(getCityDetails(location));
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetchPrayerTimes(1);
+useEffect(() => {
+  let ignore = false;
+
+  const fetchData = async () => {
+    try {
+      const response = await fetchPrayerTimes(1);
+      if (!ignore) {
         console.log(response);
         setSelectedPrayerTimes(response);
         dispatch(getCityDetails(response.lokacija));
-      } catch (e) {
-        console.log(e);
       }
-    };
-    fetchData();
-  }, []);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  fetchData();
+
+  return () => {
+    ignore = true;
+  };
+}, []);
+
 
   const [open, setOpen] = useState(false);
 
