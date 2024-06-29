@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Container, Fab, Stack, Tooltip } from "@mui/material";
+import { Container, Fab, Grid, Stack, Tooltip } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { getCityDetails } from "./redux/slices/weatherSlice";
 import { AppDispatch } from "./redux/store";
 import Locations from "./Locations";
-import { Card, Col, Space, Spin } from "antd";
+import { Card, Space, Spin } from "antd";
 import LocationOnSharpIcon from "@mui/icons-material/LocationOnSharp";
 import { LoadingOutlined } from "@ant-design/icons";
+import HowToPray from "./HowToPray";
+import { FaQuestion } from "react-icons/fa";
 
 const fetchPrayerLocations = async () => {
   const { data } = await axios.get(
@@ -37,29 +39,28 @@ export default function Vaktija() {
     dispatch(getCityDetails(location));
   };
 
-useEffect(() => {
-  let ignore = false;
+  useEffect(() => {
+    let ignore = false;
 
-  const fetchData = async () => {
-    try {
-      const response = await fetchPrayerTimes(1);
-      if (!ignore) {
-        console.log(response);
-        setSelectedPrayerTimes(response);
-        dispatch(getCityDetails(response.lokacija));
+    const fetchData = async () => {
+      try {
+        const response = await fetchPrayerTimes(1);
+        if (!ignore) {
+          console.log(response);
+          setSelectedPrayerTimes(response);
+          dispatch(getCityDetails(response.lokacija));
+        }
+      } catch (e) {
+        console.log(e);
       }
-    } catch (e) {
-      console.log(e);
-    }
-  };
+    };
 
-  fetchData();
+    fetchData();
 
-  return () => {
-    ignore = true;
-  };
-}, []);
-
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const [open, setOpen] = useState(false);
 
@@ -68,6 +69,15 @@ useEffect(() => {
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const [openNamaz, setOpenNamaz] = useState(false);
+
+  const handleClickOpenNamaz = () => {
+    setOpenNamaz(true);
+  };
+  const handleCloseNamaz = () => {
+    setOpenNamaz(false);
   };
 
   const { data, error, isLoading } = useQuery({
@@ -99,7 +109,18 @@ useEffect(() => {
   return (
     <Container maxWidth="xl">
       <Stack marginTop="60px">
-        <Stack direction="row" justifyContent="flex-end">
+        <Stack direction="row" justifyContent="space-between">
+          <Tooltip title="Kako obaviti namaz?" arrow>
+            <Fab
+              sx={{ backgroundColor: "whitesmoke", color: "#a2aba3" }}
+              aria-label="location"
+              onClick={handleClickOpenNamaz}
+            >
+              <FaQuestion />
+            </Fab>
+          </Tooltip>
+          <HowToPray open={openNamaz} handleClose={handleCloseNamaz} />
+
           <Tooltip title="Lokacije" arrow>
             <Fab
               sx={{ backgroundColor: "whitesmoke", color: "#a2aba3" }}
@@ -131,91 +152,33 @@ useEffect(() => {
               </p>
             </Stack>
             <Stack sx={{ flexDirection: { md: "row", sm: "column" }, gap: 1 }}>
-              <Col md={4} sm={9}>
-                <Card
-                  title="Zora"
-                  bordered={true}
-                  style={{
-                    textAlign: "center",
-                    fontFamily: "Poppins, sans-serif",
-                  }}
-                >
-                  <h1 style={{ fontFamily: "Poppins, sans-serif" }}>
-                    {selectedPrayerTimes.vakat[0]}
-                  </h1>
-                </Card>
-              </Col>
-              <Col md={4} sm={9}>
-                <Card
-                  title="Izlazak sunca"
-                  bordered={true}
-                  style={{
-                    textAlign: "center",
-                    fontFamily: "Poppins, sans-serif",
-                  }}
-                >
-                  <h1 style={{ fontFamily: "Poppins, sans-serif" }}>
-                    {selectedPrayerTimes.vakat[1]}
-                  </h1>
-                </Card>
-              </Col>
-              <Col md={4} sm={9}>
-                <Card
-                  title="Podne"
-                  bordered={true}
-                  style={{
-                    textAlign: "center",
-                    fontFamily: "Poppins, sans-serif",
-                  }}
-                >
-                  <h1 style={{ fontFamily: "Poppins, sans-serif" }}>
-                    {" "}
-                    {selectedPrayerTimes.vakat[2]}
-                  </h1>
-                </Card>
-              </Col>
-              <Col md={4} sm={9}>
-                <Card
-                  title="Ikindija"
-                  bordered={true}
-                  style={{
-                    textAlign: "center",
-                    fontFamily: "Poppins, sans-serif",
-                  }}
-                >
-                  <h1 style={{ fontFamily: "Poppins, sans-serif" }}>
-                    {selectedPrayerTimes.vakat[3]}
-                  </h1>
-                </Card>
-              </Col>
-              <Col md={4} sm={9}>
-                <Card
-                  title="Akšam"
-                  bordered={true}
-                  style={{
-                    textAlign: "center",
-                    fontFamily: "Poppins, sans-serif",
-                  }}
-                >
-                  <h1 style={{ fontFamily: "Poppins, sans-serif" }}>
-                    {selectedPrayerTimes.vakat[4]}
-                  </h1>
-                </Card>
-              </Col>
-              <Col md={4} sm={9}>
-                <Card
-                  title="Jacija"
-                  bordered={true}
-                  style={{
-                    textAlign: "center",
-                    fontFamily: "Poppins, sans-serif",
-                  }}
-                >
-                  <h1 style={{ fontFamily: "Poppins, sans-serif" }}>
-                    {selectedPrayerTimes.vakat[5]}
-                  </h1>
-                </Card>
-              </Col>
+              <Grid container spacing={3} justifyContent="center">
+                {selectedPrayerTimes.vakat.map((time, index) => (
+                  <Grid item xs={12} sm={12} md={2} key={index}>
+                    <Card
+                      title={
+                        [
+                          "Zora",
+                          "Izlazak sunca",
+                          "Podne",
+                          "Ikindija",
+                          "Akšam",
+                          "Jacija",
+                        ][index]
+                      }
+                      bordered={true}
+                      style={{
+                        textAlign: "center",
+                        fontFamily: "Poppins, sans-serif",
+                      }}
+                    >
+                      <h1 style={{ fontFamily: "Poppins, sans-serif" }}>
+                        {time}
+                      </h1>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
             </Stack>
           </Stack>
         )}
