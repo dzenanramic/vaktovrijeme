@@ -13,9 +13,17 @@ import HowToPray from "./HowToPray";
 import { FaQuestion } from "react-icons/fa";
 
 const fetchPrayerLocations = async () => {
+  const cachedData = localStorage.getItem("prayerLocations");
+
+  if (cachedData) {
+    return JSON.parse(cachedData);
+  }
+
   const { data } = await axios.get(
     "https://api.vaktija.ba/vaktija/v1/lokacije"
   );
+  localStorage.setItem("prayerLocations", JSON.stringify(data));
+
   return data;
 };
 
