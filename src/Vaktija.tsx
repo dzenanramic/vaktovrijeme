@@ -28,11 +28,37 @@ const fetchPrayerLocations = async () => {
 };
 
 const fetchPrayerTimes = async (index: number) => {
-  const { data } = await axios.get(
-    `https://api.vaktija.ba/vaktija/v1/${index}`
-  );
-  return data;
+  const cachedDataKey = `prayerTimesData${index}`;
+  const cachedTimestampKey = `prayerTimesTimestamp${index}`;
+  const cachedData = localStorage.getItem(cachedDataKey);
+  const cachedTimestamp = localStorage.getItem(cachedTimestampKey);
+
+  const now = new Date().getTime();
+  const staleTime = 5 * 60 * 1000; 
+
+  if (
+    cachedData &&
+    cachedTimestamp &&
+    now - parseInt(cachedTimestamp) < staleTime
+  ) {
+    return JSON.parse(cachedData);
+  }
+
+  try {
+    const { data } = await axios.get(
+      `https://api.vaktija.ba/vaktija/v1/${index}`
+    );
+
+    localStorage.setItem(cachedDataKey, JSON.stringify(data));
+    localStorage.setItem(cachedTimestampKey, now.toString());
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching prayer times:", error);
+    throw error;
+  }
 };
+
 
 export default function Vaktija() {
   const [selectedPrayerTimes, setSelectedPrayerTimes] = useState<{
