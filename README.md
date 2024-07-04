@@ -33,7 +33,7 @@ Vakovrijeme is a web application designed to provide praying times and weather i
 
 ## Installation
 
-- Clone the repository: git clone [repository URL]
+- Clone the repository
 - Navigate into the project directory: cd vakovrijeme
 - Install dependencies: npm install
 
