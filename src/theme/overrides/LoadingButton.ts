@@ -1,8 +1,8 @@
-import { Theme } from '@mui/material/styles';
+
 
 // ----------------------------------------------------------------------
 
-export default function LoadingButton(theme: Theme) {
+export default function LoadingButton() {
   return {
     MuiLoadingButton: {
       variants: [
