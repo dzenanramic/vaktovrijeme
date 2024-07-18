@@ -34,7 +34,7 @@ const fetchPrayerTimes = async (index: number) => {
   const cachedTimestamp = localStorage.getItem(cachedTimestampKey);
 
   const now = new Date().getTime();
-  const staleTime = 5 * 60 * 1000; 
+  const staleTime = 5 * 60 * 1000;
 
   if (
     cachedData &&
@@ -58,7 +58,6 @@ const fetchPrayerTimes = async (index: number) => {
     throw error;
   }
 };
-
 
 export default function Vaktija() {
   const [selectedPrayerTimes, setSelectedPrayerTimes] = useState<{
@@ -146,7 +145,7 @@ export default function Vaktija() {
         <Stack direction="row" justifyContent="space-between">
           <Tooltip title="Kako obaviti namaz?" arrow>
             <Fab
-              sx={{ backgroundColor: "whitesmoke", color: "#a2aba3" }}
+              sx={{ backgroundColor: "#F0F0F0", color: "#97912C" }}
               aria-label="location"
               onClick={handleClickOpenNamaz}
             >
@@ -155,9 +154,27 @@ export default function Vaktija() {
           </Tooltip>
           <HowToPray open={openNamaz} handleClose={handleCloseNamaz} />
 
+          <h1
+            style={{
+              fontFamily: "Playwrite HR, sans-serif",
+              color: "#97912C",
+              fontSize:
+                window.innerWidth <= 488
+                  ? "30px"
+                  : window.innerWidth <= 648
+                  ? "40px"
+                  : window.innerWidth <= 1200
+                  ? "50px"
+                  : "66px",
+              fontWeight: "400",
+            }}
+          >
+            Vaktovrijeme
+          </h1>
+
           <Tooltip title="Lokacije" arrow>
             <Fab
-              sx={{ backgroundColor: "whitesmoke", color: "#a2aba3" }}
+              sx={{ backgroundColor: "#F0F0F0", color: "#97912C" }}
               aria-label="location"
               onClick={handleClickOpen}
             >
@@ -172,13 +189,15 @@ export default function Vaktija() {
           />
         </Stack>
         {selectedPrayerTimes && (
-          <Stack spacing={7} marginTop="60px">
+          <Stack spacing={11} marginTop="60px">
             <Stack alignItems="center">
               <Stack direction="row" alignItems="center" spacing={0.5}>
                 <LocationOnSharpIcon
                   sx={{ fontSize: "28px", color: "#a2aba3" }}
                 />
-                <h1>{selectedPrayerTimes.lokacija}</h1>
+                <h1 style={{ color: "#4C4B35" }}>
+                  {selectedPrayerTimes.lokacija}
+                </h1>
               </Stack>
               <p>
                 Datum: {selectedPrayerTimes.datum[1]} /{" "}
@@ -204,6 +223,13 @@ export default function Vaktija() {
                       style={{
                         textAlign: "center",
                         fontFamily: "Poppins, sans-serif",
+                        backgroundColor: "inherit",
+                        border: "1px solid #4C4B35",
+                        borderRadius: "30px",
+                        color: "#97912C",
+                        fontWeight: "bold",
+                        outline: "2px solid #97912C",
+                        outlineOffset: "1px",
                       }}
                     >
                       <h1 style={{ fontFamily: "Poppins, sans-serif" }}>
