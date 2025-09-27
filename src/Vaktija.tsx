@@ -1,7 +1,16 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Container, Fab, Grid, Stack, Tooltip } from "@mui/material";
+import {
+  Container,
+  Fab,
+  Grid,
+  Stack,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { useDispatch } from "react-redux";
 import { getCityDetails } from "./redux/slices/weatherSlice";
 import { AppDispatch } from "./redux/store";
@@ -66,6 +75,20 @@ export default function Vaktija() {
     vakat: string[];
   } | null>(null);
 
+  const theme = useTheme();
+  const isXsDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const isSmOnly = useMediaQuery(theme.breakpoints.between("sm", "md"));
+  const isMdOnly = useMediaQuery(theme.breakpoints.between("md", "lg"));
+  const titleFontSize = isXsDown
+    ? "30px"
+    : isSmOnly
+    ? "40px"
+    : isMdOnly
+    ? "50px"
+    : "66px";
+
+  const dispatch: AppDispatch = useDispatch();
+
   const handleCityClick = async (location: string, index: number) => {
     const prayerTimes = await fetchPrayerTimes(index);
     setSelectedPrayerTimes(prayerTimes);
@@ -93,7 +116,7 @@ export default function Vaktija() {
     return () => {
       ignore = true;
     };
-  }, []);
+  }, [dispatch]);
 
   const [open, setOpen] = useState(false);
 
@@ -118,8 +141,6 @@ export default function Vaktija() {
     queryFn: fetchPrayerLocations,
   });
 
-  const dispatch: AppDispatch = useDispatch();
-
   if (isLoading)
     return (
       <Stack
@@ -140,9 +161,20 @@ export default function Vaktija() {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <Container maxWidth="xl">
-      <Stack marginTop="60px">
-        <Stack direction="row" justifyContent="space-between">
+    <Container
+      maxWidth="xl"
+      sx={{
+        px: { xs: 2, md: 3 },
+        py: { xs: 2, md: 4 },
+      }}
+    >
+      <Stack sx={{ mt: { xs: "32px", md: "60px" } }}>
+        <Stack
+          direction={{ xs: "row", sm: "row" }}
+          alignItems={{ xs: "center", sm: "center" }}
+          justifyContent="space-between"
+          sx={{ gap: { xs: 2, sm: 0 } }}
+        >
           <Tooltip title="Kako obaviti namaz?" arrow>
             <Fab
               sx={{ backgroundColor: "#F0F0F0", color: "#97912C" }}
@@ -152,25 +184,20 @@ export default function Vaktija() {
               <FaQuestion />
             </Fab>
           </Tooltip>
-          <HowToPray open={openNamaz} handleClose={handleCloseNamaz} />
 
-          <h1
-            style={{
+          <Typography
+            component="h1"
+            sx={{
               fontFamily: "Playwrite HR, sans-serif",
               color: "#97912C",
-              fontSize:
-                window.innerWidth <= 488
-                  ? "30px"
-                  : window.innerWidth <= 648
-                  ? "40px"
-                  : window.innerWidth <= 1200
-                  ? "50px"
-                  : "66px",
-              fontWeight: "400",
+              fontSize: titleFontSize,
+              fontWeight: 400,
+              textAlign: "center",
+              lineHeight: 1.1,
             }}
           >
             Vaktovrijeme
-          </h1>
+          </Typography>
 
           <Tooltip title="Lokacije" arrow>
             <Fab
@@ -181,33 +208,77 @@ export default function Vaktija() {
               <LocationOnSharpIcon />
             </Fab>
           </Tooltip>
-          <Locations
-            open={open}
-            handleClose={handleClose}
-            handleCityClick={handleCityClick}
-            data={data}
-          />
         </Stack>
+        <HowToPray open={openNamaz} handleClose={handleCloseNamaz} />
+        <Locations
+          open={open}
+          handleClose={handleClose}
+          handleCityClick={handleCityClick}
+          data={data}
+        />
         {selectedPrayerTimes && (
-          <Stack spacing={11} marginTop="60px">
+          <Stack
+            sx={{
+              mt: { xs: "40px", md: "60px" },
+              gap: { xs: 6, md: 11 },
+            }}
+          >
             <Stack alignItems="center">
-              <Stack direction="row" alignItems="center" spacing={0.5}>
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                alignItems="center"
+                spacing={0.5}
+                sx={{ textAlign: "center" }}
+              >
                 <LocationOnSharpIcon
                   sx={{ fontSize: "28px", color: "#a2aba3" }}
                 />
-                <h1 style={{ color: "#4C4B35" }}>
+                <Typography
+                  component="h1"
+                  sx={{
+                    color: "#4C4B35",
+                    fontFamily: "Poppins, sans-serif",
+                    fontSize: { xs: "24px", sm: "28px", md: "32px" },
+                    fontWeight: 500,
+                  }}
+                >
                   {selectedPrayerTimes.lokacija}
-                </h1>
+                </Typography>
               </Stack>
-              <p>
+              <Typography
+                component="p"
+                sx={{
+                  fontFamily: "Poppins, sans-serif",
+                  fontSize: { xs: "14px", sm: "16px" },
+                  color: "#4C4B35",
+                  mt: 1,
+                  textAlign: "center",
+                }}
+              >
                 Datum: {selectedPrayerTimes.datum[1]} /{" "}
                 {selectedPrayerTimes.datum[0]}
-              </p>
+              </Typography>
             </Stack>
-            <Stack sx={{ flexDirection: { md: "row", sm: "column" }, gap: 1 }}>
-              <Grid container spacing={3} justifyContent="center">
+            <Stack
+              sx={{
+                flexDirection: { md: "row", sm: "column" },
+                gap: { xs: 3, md: 1 },
+              }}
+            >
+              <Grid
+                container
+                spacing={{ xs: 2, md: 3 }}
+                justifyContent="center"
+              >
                 {selectedPrayerTimes.vakat.map((time, index) => (
-                  <Grid item xs={12} sm={12} md={2} key={index}>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={2}
+                    key={index}
+                    sx={{ display: "flex", justifyContent: "center" }}
+                  >
                     <Card
                       title={
                         [
@@ -230,9 +301,18 @@ export default function Vaktija() {
                         fontWeight: "bold",
                         outline: "2px solid #97912C",
                         outlineOffset: "1px",
+                        padding: isXsDown ? "16px 12px" : "24px 16px",
+                        width: "100%",
+                        maxWidth: 320,
                       }}
                     >
-                      <h1 style={{ fontFamily: "Poppins, sans-serif" }}>
+                      <h1
+                        style={{
+                          fontFamily: "Poppins, sans-serif",
+                          fontSize: isXsDown ? "24px" : "32px",
+                          margin: 0,
+                        }}
+                      >
                         {time}
                       </h1>
                     </Card>
