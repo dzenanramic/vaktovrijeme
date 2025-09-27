@@ -2,9 +2,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import { Container, Stack, Tooltip } from "@mui/material";
 import { Space, Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
 import CompressIcon from "@mui/icons-material/Compress";
 import AirSharpIcon from "@mui/icons-material/AirSharp";
+import { LoadingOutlined } from "@ant-design/icons";
 import { BsThermometer } from "react-icons/bs";
 
 function Weather() {
@@ -39,10 +39,20 @@ function Weather() {
   }
 
   return (
-    <Container maxWidth="xl">
-      <Stack alignItems="center">
-        <Stack direction="row" alignItems="center" spacing={3}>
-          <Stack direction="row" alignItems="center">
+    <Container
+      maxWidth="xl"
+      sx={{
+        px: { xs: 2, md: 3 },
+        py: { xs: 2, md: 4 },
+      }}
+    >
+      <Stack alignItems="center" spacing={{ xs: 3, md: 4 }}>
+        <Stack
+          direction={{ xs: "row", sm: "row" }}
+          alignItems="center"
+          spacing={{ xs: 2, sm: 3 }}
+        >
+          <Stack direction="row" alignItems="center" spacing={1.5}>
             <BsThermometer fontSize="32px" color="#a2aba3" />
             <h3>{weatherData.main.temp} °C</h3>
           </Stack>
@@ -67,16 +77,21 @@ function Weather() {
               <img
                 src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
                 alt="Weather Icon"
+                style={{ width: "96px", height: "96px" }}
               />
             </Tooltip>
           </Stack>
         </Stack>
-        <Stack direction="row" alignItems="center" spacing={4}>
-          <Stack direction="row" alignItems="center">
+        <Stack
+          direction={{ xs: "row", sm: "row" }}
+          alignItems="center"
+          spacing={{ xs: 2, sm: 4 }}
+        >
+          <Stack direction="row" alignItems="center" spacing={1.5}>
             <CompressIcon sx={{ fontSize: "32px", color: "#a2aba3" }} />
             <h3>{weatherData.main.pressure} mps</h3>
           </Stack>
-          <Stack direction="row" alignItems="center">
+          <Stack direction="row" alignItems="center" spacing={1.5}>
             <AirSharpIcon sx={{ fontSize: "32px", color: "#a2aba3" }} />
             <h3>{weatherData.wind.speed} km/h</h3>
           </Stack>
