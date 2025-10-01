@@ -164,7 +164,10 @@ export default function Vaktija() {
       sx={{
         px: { xs: 2, md: 3 },
         py: { xs: 2, md: 4 },
-        background: "linear-gradient(180deg, #fdfcfb, #fef9c3)", // soft cream gradient
+        background: "linear-gradient(180deg, #fdfcfb, #fef9c3)",
+        borderRadius: "20px",
+        boxShadow: "0 6px 16px rgba(0,0,0,0.1)",
+        mt: { xs: 4, md: 6 },
         minHeight: "100vh",
       }}
     >

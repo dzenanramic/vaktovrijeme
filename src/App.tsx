@@ -7,7 +7,7 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={{ paddingY: { xs: 4, md: 6 } }}>
       <QueryClientProvider client={queryClient}>
         <Stack spacing={7}>
           <Vaktija />
