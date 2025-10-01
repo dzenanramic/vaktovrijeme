@@ -168,7 +168,7 @@ export default function Vaktija() {
         borderRadius: "20px",
         boxShadow: "0 6px 16px rgba(0,0,0,0.1)",
         mt: { xs: 4, md: 6 },
-        minHeight: "100vh",
+        minHeight: "70vh",
       }}
     >
       <Stack sx={{ mt: { xs: "32px", md: "60px" } }}>
