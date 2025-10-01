@@ -180,6 +180,7 @@ export default function Vaktija() {
         >
           <Tooltip title="Kako obaviti namaz?" arrow>
             <Fab
+              size={isXsDown ? "small" : "medium"}
               sx={{
                 backgroundColor: "#fef9c3",
                 color: "#166534",
@@ -188,7 +189,7 @@ export default function Vaktija() {
               aria-label="how-to-pray"
               onClick={handleClickOpenNamaz}
             >
-              <FaQuestion />
+              <FaQuestion size={isXsDown ? 16 : 20} />
             </Fab>
           </Tooltip>
 
@@ -209,6 +210,7 @@ export default function Vaktija() {
 
           <Tooltip title="Lokacije" arrow>
             <Fab
+              size={isXsDown ? "small" : "medium"}
               sx={{
                 backgroundColor: "#fef9c3",
                 color: "#166534",
@@ -217,7 +219,7 @@ export default function Vaktija() {
               aria-label="location"
               onClick={handleClickOpen}
             >
-              <LocationOnSharpIcon />
+              <LocationOnSharpIcon sx={{ fontSize: isXsDown ? 18 : 24 }} />
             </Fab>
           </Tooltip>
         </Stack>
