@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 import { getCityDetails } from "./redux/slices/weatherSlice";
 import { AppDispatch } from "./redux/store";
 import Locations from "./Locations";
-import { Card, Space, Spin } from "antd";
+import { Card, Spin } from "antd";
 import LocationOnSharpIcon from "@mui/icons-material/LocationOnSharp";
 import { LoadingOutlined } from "@ant-design/icons";
 import HowToPray from "./HowToPray";
@@ -102,7 +102,6 @@ export default function Vaktija() {
       try {
         const response = await fetchPrayerTimes(1);
         if (!ignore) {
-          console.log(response);
           setSelectedPrayerTimes(response);
           dispatch(getCityDetails(response.lokacija));
         }
@@ -119,22 +118,12 @@ export default function Vaktija() {
   }, [dispatch]);
 
   const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const [openNamaz, setOpenNamaz] = useState(false);
-
-  const handleClickOpenNamaz = () => {
-    setOpenNamaz(true);
-  };
-  const handleCloseNamaz = () => {
-    setOpenNamaz(false);
-  };
+  const handleClickOpenNamaz = () => setOpenNamaz(true);
+  const handleCloseNamaz = () => setOpenNamaz(false);
 
   const { data, error, isLoading } = useQuery({
     queryKey: ["prayerLocations"],
@@ -148,13 +137,22 @@ export default function Vaktija() {
         justifyContent="center"
         sx={{ height: "100vh" }}
       >
-        <Space>
-          <Spin
-            indicator={<LoadingOutlined spin style={{ fontSize: 60 }} />}
-            size="large"
-            tip="Učitavanje..."
-          />
-        </Space>
+        <Spin
+          indicator={<LoadingOutlined spin style={{ fontSize: 60 }} />}
+          size="large"
+        />
+        <Typography
+          component="p"
+          sx={{
+            fontFamily: "Poppins, sans-serif",
+            fontSize: { xs: "14px", sm: "16px" },
+            color: "#4b5563",
+            mt: 2,
+            textAlign: "center",
+          }}
+        >
+          Učitavanje...
+        </Typography>
       </Stack>
     );
 
@@ -166,6 +164,8 @@ export default function Vaktija() {
       sx={{
         px: { xs: 2, md: 3 },
         py: { xs: 2, md: 4 },
+        background: "linear-gradient(180deg, #fdfcfb, #fef9c3)", // soft cream gradient
+        minHeight: "100vh",
       }}
     >
       <Stack sx={{ mt: { xs: "32px", md: "60px" } }}>
@@ -177,8 +177,12 @@ export default function Vaktija() {
         >
           <Tooltip title="Kako obaviti namaz?" arrow>
             <Fab
-              sx={{ backgroundColor: "#F0F0F0", color: "#97912C" }}
-              aria-label="location"
+              sx={{
+                backgroundColor: "#fef9c3",
+                color: "#166534",
+                "&:hover": { backgroundColor: "#fde68a" },
+              }}
+              aria-label="how-to-pray"
               onClick={handleClickOpenNamaz}
             >
               <FaQuestion />
@@ -189,11 +193,12 @@ export default function Vaktija() {
             component="h1"
             sx={{
               fontFamily: "Playwrite HR, sans-serif",
-              color: "#97912C",
+              color: "#166534",
               fontSize: titleFontSize,
-              fontWeight: 400,
+              fontWeight: 500,
               textAlign: "center",
               lineHeight: 1.1,
+              textShadow: "1px 1px 3px rgba(0,0,0,0.15)",
             }}
           >
             Vaktovrijeme
@@ -201,7 +206,11 @@ export default function Vaktija() {
 
           <Tooltip title="Lokacije" arrow>
             <Fab
-              sx={{ backgroundColor: "#F0F0F0", color: "#97912C" }}
+              sx={{
+                backgroundColor: "#fef9c3",
+                color: "#166534",
+                "&:hover": { backgroundColor: "#fde68a" },
+              }}
               aria-label="location"
               onClick={handleClickOpen}
             >
@@ -209,6 +218,7 @@ export default function Vaktija() {
             </Fab>
           </Tooltip>
         </Stack>
+
         <HowToPray open={openNamaz} handleClose={handleCloseNamaz} />
         <Locations
           open={open}
@@ -216,6 +226,7 @@ export default function Vaktija() {
           handleCityClick={handleCityClick}
           data={data}
         />
+
         {selectedPrayerTimes && (
           <Stack
             sx={{
@@ -231,15 +242,15 @@ export default function Vaktija() {
                 sx={{ textAlign: "center" }}
               >
                 <LocationOnSharpIcon
-                  sx={{ fontSize: "28px", color: "#a2aba3" }}
+                  sx={{ fontSize: "28px", color: "#166534" }}
                 />
                 <Typography
                   component="h1"
                   sx={{
-                    color: "#4C4B35",
+                    color: "#14532d",
                     fontFamily: "Poppins, sans-serif",
                     fontSize: { xs: "24px", sm: "28px", md: "32px" },
-                    fontWeight: 500,
+                    fontWeight: 600,
                   }}
                 >
                   {selectedPrayerTimes.lokacija}
@@ -250,7 +261,7 @@ export default function Vaktija() {
                 sx={{
                   fontFamily: "Poppins, sans-serif",
                   fontSize: { xs: "14px", sm: "16px" },
-                  color: "#4C4B35",
+                  color: "#4b5563",
                   mt: 1,
                   textAlign: "center",
                 }}
@@ -259,6 +270,7 @@ export default function Vaktija() {
                 {selectedPrayerTimes.datum[0]}
               </Typography>
             </Stack>
+
             <Stack
               sx={{
                 flexDirection: { md: "row", sm: "column" },
@@ -281,40 +293,64 @@ export default function Vaktija() {
                   >
                     <Card
                       title={
-                        [
-                          "Zora",
-                          "Izlazak sunca",
-                          "Podne",
-                          "Ikindija",
-                          "Akšam",
-                          "Jacija",
-                        ][index]
+                        <span
+                          style={{
+                            fontFamily: "Poppins, sans-serif",
+                            fontSize: isXsDown ? "28px" : "22px",
+                            fontWeight: 600,
+                            color: "#166534",
+                          }}
+                        >
+                          {
+                            [
+                              "Zora",
+                              "Izlazak sunca",
+                              "Podne",
+                              "Ikindija",
+                              "Akšam",
+                              "Jacija",
+                            ][index]
+                          }
+                        </span>
                       }
-                      bordered={true}
                       style={{
                         textAlign: "center",
                         fontFamily: "Poppins, sans-serif",
-                        backgroundColor: "inherit",
-                        border: "1px solid #4C4B35",
-                        borderRadius: "30px",
-                        color: "#97912C",
-                        fontWeight: "bold",
-                        outline: "2px solid #97912C",
-                        outlineOffset: "1px",
+                        background: "linear-gradient(145deg, #ffffff, #fef9c3)",
+                        borderRadius: "20px",
+                        color: "#166534",
+                        boxShadow: "0 6px 16px rgba(0,0,0,0.1)",
                         padding: isXsDown ? "16px 12px" : "24px 16px",
                         width: "100%",
-                        maxWidth: 320,
+                        maxWidth: 300,
+                        transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                        cursor: "pointer",
+                      }}
+                      styles={{ body: { padding: "12px 0" } }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLElement).style.transform =
+                          "scale(1.03)";
+                        (e.currentTarget as HTMLElement).style.boxShadow =
+                          "0 10px 20px rgba(0,0,0,0.15)";
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLElement).style.transform =
+                          "scale(1)";
+                        (e.currentTarget as HTMLElement).style.boxShadow =
+                          "0 6px 16px rgba(0,0,0,0.1)";
                       }}
                     >
-                      <h1
+                      <p
                         style={{
                           fontFamily: "Poppins, sans-serif",
-                          fontSize: isXsDown ? "24px" : "32px",
+                          fontSize: isXsDown ? "32px" : "40px",
                           margin: 0,
+                          fontWeight: 600,
+                          color: "#0f172a",
                         }}
                       >
                         {time}
-                      </h1>
+                      </p>
                     </Card>
                   </Grid>
                 ))}
