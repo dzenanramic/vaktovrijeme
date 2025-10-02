@@ -65,24 +65,17 @@ const HowToPray: React.FC<LocationsProps> = ({ open, handleClose }) => {
           Kako se obavlja namaz?
         </Typography>
         <Typography sx={{ m: 0, p: 2, fontFamily: "Poppins, sans-serif" }}>
-          Namaz se ispravno obavlja uz poštivanje čistoće tijela (
-          <a
-            href="https://www.youtube.com/watch?v=L06SmxESBNA&t=13s"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            uzimanjem abdesta
-          </a>{" "}
-          ili gusula), čistoće mjesta na kojem se klanja, pravilnog položaja
-          tijela, jasne namjere, pridržavanja pravilnog vremena i okretanja
-          prema Kabi u Meki.
+          Namaz se ispravno obavlja uz poštivanje čistoće tijela uzimanjem
+          abdesta ili gusula, čistoće mjesta na kojem se klanja, pravilnog
+          položaja tijela, jasne namjere, pridržavanja pravilnog vremena i
+          okretanja prema Kabi u Meki.
         </Typography>
 
         <Typography sx={{ m: 0, p: 2, fontFamily: "Poppins, sans-serif" }}>
-          Praktičan primjer samog obavljanja namaza kako se i šta se uči možete
-          pronaći{" "}
+          Detaljan praktičan vodič o uzimanju abdesta i klanjanju namaza možete
+          pogledati{" "}
           <a
-            href="https://namazhelp.blogspot.com/"
+            href="https://kako-klanjati.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
           >

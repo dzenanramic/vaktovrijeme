@@ -156,7 +156,62 @@ export default function Vaktija() {
       </Stack>
     );
 
-  if (error) return <div>Error: {error.message}</div>;
+  if (error)
+    return (
+      <Container
+        maxWidth="xl"
+        sx={{
+          px: { xs: 2, md: 3 },
+          py: { xs: 2, md: 4 },
+          background: "linear-gradient(180deg, #fdfcfb, #fef9c3)",
+          borderRadius: "20px",
+          boxShadow: "0 6px 16px rgba(0,0,0,0.1)",
+          mt: { xs: 4, md: 6 },
+          minHeight: "70vh",
+        }}
+      >
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          sx={{ height: "100%", minHeight: "50vh" }}
+        >
+          <Card
+            style={{
+              textAlign: "center",
+              fontFamily: "Poppins, sans-serif",
+              background: "linear-gradient(145deg, #ffffff, #fef9c3)",
+              borderRadius: "20px",
+              boxShadow: "0 6px 16px rgba(0,0,0,0.1)",
+              padding: "32px 24px",
+              maxWidth: 500,
+            }}
+          >
+            <Typography
+              component="h2"
+              sx={{
+                fontFamily: "Poppins, sans-serif",
+                fontSize: { xs: "20px", sm: "24px" },
+                fontWeight: 600,
+                color: "#dc2626",
+                mb: 2,
+              }}
+            >
+              Greška pri učitavanju
+            </Typography>
+            <Typography
+              component="p"
+              sx={{
+                fontFamily: "Poppins, sans-serif",
+                fontSize: { xs: "14px", sm: "16px" },
+                color: "#4b5563",
+              }}
+            >
+              Trenutno ne možemo učitati podatke. Molimo pokušajte kasnije.
+            </Typography>
+          </Card>
+        </Stack>
+      </Container>
+    );
 
   return (
     <Container
@@ -232,7 +287,48 @@ export default function Vaktija() {
           data={data}
         />
 
-        {selectedPrayerTimes && (
+        {!selectedPrayerTimes ? (
+          <Stack
+            alignItems="center"
+            justifyContent="center"
+            sx={{ minHeight: "40vh", mt: { xs: "40px", md: "60px" } }}
+          >
+            <Card
+              style={{
+                textAlign: "center",
+                fontFamily: "Poppins, sans-serif",
+                background: "linear-gradient(145deg, #ffffff, #fef9c3)",
+                borderRadius: "20px",
+                boxShadow: "0 6px 16px rgba(0,0,0,0.1)",
+                padding: "32px 24px",
+                maxWidth: 500,
+              }}
+            >
+              <Typography
+                component="h2"
+                sx={{
+                  fontFamily: "Poppins, sans-serif",
+                  fontSize: { xs: "18px", sm: "20px" },
+                  fontWeight: 600,
+                  color: "#166534",
+                  mb: 1,
+                }}
+              >
+                Dobrodošli
+              </Typography>
+              <Typography
+                component="p"
+                sx={{
+                  fontFamily: "Poppins, sans-serif",
+                  fontSize: { xs: "14px", sm: "16px" },
+                  color: "#4b5563",
+                }}
+              >
+                Podaci se učitavaju...
+              </Typography>
+            </Card>
+          </Stack>
+        ) : (
           <Stack
             sx={{
               mt: { xs: "40px", md: "60px" },

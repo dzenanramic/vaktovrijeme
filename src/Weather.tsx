@@ -31,11 +31,73 @@ function Weather() {
   }
 
   if (error) {
-    return <Stack alignItems="center">Currently no data</Stack>;
+    return (
+      <Container
+        maxWidth="xl"
+        sx={{
+          px: { xs: 2, md: 3 },
+          py: { xs: 2, md: 4 },
+          background: "linear-gradient(180deg, #fdfcfb, #fef9c3)",
+          borderRadius: "20px",
+          boxShadow: "0 6px 16px rgba(0,0,0,0.1)",
+          mt: { xs: 4, md: 6 },
+          minHeight: "30vh",
+        }}
+      >
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          sx={{ height: "100%", minHeight: "20vh" }}
+        >
+          <Typography
+            component="p"
+            sx={{
+              fontFamily: "Poppins, sans-serif",
+              fontSize: { xs: "14px", sm: "16px" },
+              color: "#4b5563",
+              textAlign: "center",
+            }}
+          >
+            Trenutno nema dostupnih vremenskih podataka
+          </Typography>
+        </Stack>
+      </Container>
+    );
   }
 
   if (!weatherData) {
-    return <Stack alignItems="center">No weather data available</Stack>;
+    return (
+      <Container
+        maxWidth="xl"
+        sx={{
+          px: { xs: 2, md: 3 },
+          py: { xs: 2, md: 4 },
+          background: "linear-gradient(180deg, #fdfcfb, #fef9c3)",
+          borderRadius: "20px",
+          boxShadow: "0 6px 16px rgba(0,0,0,0.1)",
+          mt: { xs: 4, md: 6 },
+          minHeight: "30vh",
+        }}
+      >
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          sx={{ height: "100%", minHeight: "20vh" }}
+        >
+          <Typography
+            component="p"
+            sx={{
+              fontFamily: "Poppins, sans-serif",
+              fontSize: { xs: "14px", sm: "16px" },
+              color: "#4b5563",
+              textAlign: "center",
+            }}
+          >
+            Odaberite lokaciju za prikaz vremenskih podataka
+          </Typography>
+        </Stack>
+      </Container>
+    );
   }
 
   return (
